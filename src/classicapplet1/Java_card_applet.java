@@ -96,6 +96,17 @@ public class Java_card_applet extends Applet {
             case SET_DATA_3:
                 storeData(apdu, (short) 3);
                 return;
+
+            case GET_DATA_1:
+                readData(apdu, (short) 1);
+                return;
+            case GET_DATA_2:
+                readData(apdu, (short) 2);
+                return;
+            case GET_DATA_3:
+                readData(apdu, (short) 3);
+                return;
+
             case UNBLOCK:
                 mPin.resetAndUnblock();
                 return;
@@ -151,6 +162,35 @@ public class Java_card_applet extends Applet {
                 mData3 = store_data;
                 break;
         }
+
+    }
+
+    private void readData(APDU apdu, short type) {
+        if (!mPin.isValidated()) {
+            ISOException.throwIt(SW_PIN_VERIFICATION_REQUIRED);
+        }
+        byte[] buffer = apdu.getBuffer();
+        // inform system that the applet has finished
+        // processing the command and the system should
+        // now prepare to construct a response APDU
+        // which contains data field
+        short le = apdu.setOutgoing();
+
+        byte[] responseData = null;
+        switch (type) {
+            case (short) 1:
+                responseData = mData1;
+                break;
+            case (short) 2:
+                responseData = mData2;
+                break;
+            default:
+                responseData = mData3;
+                break;
+        }
+
+        apdu.setOutgoingLength((short) responseData.length);
+        apdu.sendBytesLong(responseData, (short) 0, (short) responseData.length);
 
     }
 }
