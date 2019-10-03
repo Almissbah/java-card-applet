@@ -1,0 +1,10 @@
+//Test script for Applet 'Java_card_applet'
+
+powerup;
+// Select Java_card_applet //aid/19D2026C20/C8
+0x00 0xA4 0x04 0x00 0X06 0X19 0XD2 0X02 0X6C 0X20 0XC9 0x7F;
+
+//Send the APDU here
+//0x80 0xCA 0x00 0x00 <length> <data> 0x7F;
+
+powerdown;
